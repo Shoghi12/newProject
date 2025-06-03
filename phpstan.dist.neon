@@ -7,5 +7,5 @@ parameters:
         - src/
         - tests/
 
-ignoreErrors:
+    ignoreErrors:
         - '#Property App\\Entity\\User::\$id is never written, only read.#'

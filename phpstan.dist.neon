@@ -6,3 +6,6 @@ parameters:
         - public/
         - src/
         - tests/
+
+ignoreErrors:
+        - '#Property App\\Entity\\User::\$id is never written, only read.#'

@@ -30,3 +30,29 @@ jobs:
 
     - name: Run PHPUnit tests  
       run: vendor/bin/phpunit
+
+  deploy:
+    if: contains(github.ref, 'develop')
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: executing remote ssh commands using password 
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ vars.SSH_HOST }}
+        username: ${{ vars.SSH_USERNAME }}
+        password: ${{ vars.SSH_PASSWORD }} 
+        port: 2048
+        script: |
+          whoami
+          cd /var/www/my-preprod/php82/bianco/srcs
+          git pull
+          rm -Rf composer.lock
+          php8.2 /usr/local/bin/composer install
+          php8.2 bin/console assets:install
+          rm -Rf var/cache/*
+          rm -Rf migrations/*
+          php8.2 bin/console make:migration
+          echo yes
+          php8.2 bin/console doctrine:migrations:migrate
+          echo yes    

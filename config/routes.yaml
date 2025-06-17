@@ -1,3 +1,14 @@
+fo_controllers:
+    resource:
+        path: ../src/Controller/Fo
+        namespace: App\Controller\Fo
+    type: attribute
+    prefix: /
+    name_prefix: app.fo.
+    defaults: { _locale: 'fr' }
+    requirements:
+        _locale: fr|en
+        
 controllers:
     resource:
         path: ../src/Controller/

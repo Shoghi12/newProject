@@ -1,7 +1,580 @@
+
 {% extends 'base.html.twig' %}
+{% block stylesheets %}
+<style>
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+body, input, .sort {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  background:#f2f3f5;
+}
 
-{% block title %}Hello HomeController!{% endblock %}
+#sandbox {
+  margin: 0px;
+  display:flex;
+}
+.sideb {
+  flex:0 0 25%;
+}
 
+.listb {
+  flex-grow:1;
+  margin-left:50px;
+}
+
+input {
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  padding: 7px 14px;
+  margin-bottom: 10px;
+  width: 100%;
+  display:block;
+}
+input:focus {
+  outline: none;
+  border-color: #aaa;
+}
+
+
+
+.sort {
+  padding: 8px 16px;
+  border-radius: 0px;
+  border: none;
+  display: inline-block;
+  color: #fff;
+  vertical-align:top;
+  text-decoration: none;
+  background-color: #28a8e0;
+  height: 36px;
+  margin: 5px 5px;
+}
+.sort:hover {
+  text-decoration: none;
+  background-color: #1b8aba;
+}
+.sort:focus {
+  outline: none;
+}
+.sort:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  content: "";
+  position: relative;
+  top: -10px;
+  right: -5px;
+}
+.sort .asc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #fff;
+  content: "";
+  position: relative;
+  top: 13px;
+  right: -5px;
+}
+.sort .desc:after {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #fff;
+  content: "";
+  position: relative;
+  top: -10px;
+  right: -5px;
+}
+
+.list {
+  margin: 0;
+  padding: 20px 0 0;
+}
+.list li {
+  display: block;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: inset 0 1px 0 #fff;
+  margin-bottom: 20px;
+}
+.list li h3 {
+  font-size: 24px;
+  line-height:34px;
+  margin:0 0 10px 0;
+  font-weight: 600;
+}
+
+.list li a {
+  text-decoration:none;
+  color:#0c0c0c
+}
+
+.list li .jobType {
+  margin: 0;
+  background-color:rgba(43,91,167,.58);
+  color:#fff;
+  font-size: 12px;
+  display:inline-block;
+  padding:5px 10px;
+}
+.list li .jobLocation {
+  margin: 0;
+  padding:6px 10px;
+  display:inline-block;
+  border-left:1px solid #000;
+  margin-left:10px;
+}
+
+
+.jscroll {
+  height: 700px;
+  overflow-y: scroll;
+  border: 1px solid black;
+}
+
+
+.ccontainer {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.ccontainer input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.ccontainer:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.ccontainer input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.ccontainer input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.ccontainer .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+select.location, .jobtypefilter {
+      height: 35px;
+    width: 250px;
+    max-width:80%;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.lpagignate {
+  display:flex;
+  align-items:center;
+}
+
+ul.pagination {
+    list-style-type: none;
+    margin-left: 0;
+    padding-left:0;
+    display: flex;
+}
+
+ul.pagination li {
+    padding: 0px 5px;
+    font-size:14px;
+    font-weight:bold;
+}
+
+ul.pagination li a {
+    color: inherit;
+}
+
+ul.pagination li.active a {
+    color: rgba(43,91,167,1);
+}
+
+.page-arrow {
+  font-size:20px;
+  line-height:1;
+  font-weight:bold;
+  cursor:pointer;
+  background:#fff;
+  padding:5px 10px;
+}
+
+.bottomBox {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.left-part {
+    flex-grow:1;
+}
+.mobFilter {
+  display:none;
+}
+
+@media (max-width:768px) {
+  #sandbox {
+    display: block;
+}
+  .porpSection {
+    display: none;
+  }
+  .porpSection.activeMob {
+    position: fixed;
+    display:block;
+  }
+  .mobFilter {
+    display:block;
+  }
+  .listb {
+   margin-left:0px;
+}
+
+.porpSection.activeMob {
+    position: fixed;
+    background: #fff;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    padding: 30px;
+    box-shadow: 0px 0px 8px 3px rgba(0,0,0,0.2);
+    z-index: 999;
+    max-width: 85%;
+    max-height:90%;
+    display:block;
+}
+
+
+
+body.filterActive:after {
+  content: "";
+  background: rgba(0,0,0,0.5);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: 998;
+}  
+
+body.filterActive {
+  overflow:hidden;
+}
+
+ input.search { 
+   display: inline-flex;
+   width: calc(100% - 60px);
+   box-sizing: border-box; 
+}
+.mobFilter {
+    display: inline-flex;
+    padding: 0 10px;
+    box-sizing: border-box;
+    width: 34px;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    background: #fff;
+    border-radius: 5px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+}
+
+.xbutton {
+  display:none;
+}
+
+.activeMob .xbutton {
+    display:block;
+    position: absolute;
+    top: -35px;
+    right: -35px;
+    background: #fff;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 0;
+}
+</styLe>
+{% endblock %}
 {% block body %}
-<h1>Bienvenue</h1>
+   <div id="sandbox">
+
+  <div class="sideb">
+    <h2 class="theme-color">We’re Hiring</h2>
+    <p class="text-large theme-color">Excited to work with us? Join Our Team</p>
+    <input class="search" placeholder="Search" />
+    <div class="mobFilter"><i class="fas fa-sliders-h"></i></div>
+    <div class="porpSection">
+      <button class="xbutton">X</button>
+      <div class="sortSection">
+      <h3>Sort By:</h3>
+      <button class="sort" data-sort="jobTitle">
+    Sort by Job Title
+  </button>
+      <button class="sort" data-sort="datePosted">
+    Sort by Date Posted
+  </button>
+    </div>
+    <div class="filterSection">
+      <div class="filter">
+        <h3>Filter Opening by Location</h3>
+        <select id="location-filter" class="location selectlist">
+      <option selected="selected" value="">All Locations</option>
+      <option value="Hyderabad">Hyderabad</option>
+      <option value="Bengaluru">Bengaluru</option>
+      <option value="Seattle">Seattle</option>
+      <option value="Dubai">Dubai</option>
+      <option value="London">London</option>
+    </select>
+      </div>
+      <div class="filter">
+        <h3>Filter Opening by Job Type</h3>
+        <select id="type-filter" class="jobtypefilter selectlist">
+      <option selected="selected" value="">All Job Types</option>
+      <option value="Full Time">Full Time</option>
+      <option value="Permanent">Permanent</option>
+      <option value="Part Time">Part Time</option>
+    </select>
+      </div>
+    </div>
+  </div>
+   </div>
+  <div class="listb">
+    <ul class="list" id="list">
+    </ul>
+    <div class="lpagignate"><span class="jPaginateBack page-arrow">F</span>
+      <ul class="pagination"></ul><span class="jPaginateNext page-arrow">></span></div>
+  </div>
+</div>
+
+
+
+
+   
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/2.3.1/list.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>  
+    <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    
+    <script>
+        // List.js set-up and initialisation
+
+var options = {
+  valueNames: [
+    "jobTitle",
+    "jobType",
+    "datePosted",
+    "jobLocation",
+    { attr: "href", name: "applyLink" }
+  ],
+  item:
+    '<li><a class="applyLink"><h3 class="jobTitle"></h3></a><div class="bottomBox"><div class="left-part"><p class="jobType"></p><p class="jobLocation"></p></div><div class="dateBox"><p class="datePosted"></p></div></div></li>',
+  page: 6,
+  pagination: {
+    innerWindow: 2,
+    left: 1,
+    right: 1,
+    paginationClass: "pagination"
+  }
+};
+
+var values = [
+  {
+    jobTitle: "PHP & ASP.NET Developer",
+    jobType: "Full Time",
+    datePosted: "2016-08-19",
+    jobLocation:"Hyderabad",
+    applyLink: "#"
+  },
+  {
+    jobTitle: "Data Scientist",
+    jobType: "Full Time",
+    jobLocation:"Bengaluru",
+    datePosted: "2018-08-19",
+    applyLink: "#"
+  },
+  {
+    jobTitle: "Business Development Manager",
+    jobType: "Contract",
+    jobLocation:"Bengaluru",
+    datePosted: "2018-07-19",
+    applyLink: "#"
+  },
+
+  {
+    jobTitle: "Graphic Designer",
+    jobType: "Part Time",
+    jobLocation:"Dubai",
+    datePosted: "2019-07-19",
+    applyLink: "#"
+  },
+
+  {
+    jobTitle: "Marketing Lead",
+    jobType: "Full Time",
+    jobLocation:"Hyderabad",
+    datePosted: "2018-07-19",
+    applyLink: "#"
+  },
+
+  {
+    jobTitle: "Motion graphic Artist",
+    jobType: "Full Time",
+    jobLocation:"Hyderabad",
+    datePosted: "2019-02-11",
+    applyLink: "#"
+  },
+
+  {
+    jobTitle: "Node Js Developer",
+    jobType: "Full Time",
+    jobLocation:"Seattle",
+    datePosted: "2018-07-19",
+    applyLink: "#"
+  },
+
+  {
+    jobTitle: "Angular & React Developer",
+    jobType: "Part Time",
+    jobLocation:"London",
+    datePosted: "2018-07-19",
+    applyLink: "#"
+  },
+  {
+    jobTitle: "Zseries It Specialist",
+    jobType: "full Time",
+    jobLocation:"Dubai",
+    datePosted: "2014-01-19",
+    applyLink: "#"
+  },
+  {
+    jobTitle: "Senior Content Writer",
+    jobType: "Full Time",
+    jobLocation:"Hyderabad",
+    datePosted: "2018-07-19",
+    applyLink: "#"
+  }
+];
+
+var userList = new List("sandbox", options, values);
+userList.sort("datePosted", {
+  order: "desc"
+});
+
+$(".jPaginateNext").on("click", function() {
+  var list = $(".pagination").find("li");
+  $.each(list, function(position, element) {
+    if ($(element).is(".active")) {
+      $(list[position + 1]).trigger("click");
+    }
+  });
+});
+
+$(".jPaginateBack").on("click", function() {
+  var list = $(".pagination").find("li");
+  $.each(list, function(position, element) {
+    if ($(element).is(".active")) {
+      $(list[position - 1]).trigger("click");
+    }
+  });
+});
+
+$('#type-filter').change(function () {
+    var selection = this.value;
+    if (selection) {
+        userList.filter(function(item) {
+            return (item.values().jobType == selection);
+        });
+    } else {
+        userList.filter();
+    }
+});
+
+$('#location-filter').change(function () {
+    var selection = this.value;
+    if (selection) {
+        userList.filter(function(item) {
+            return (item.values().jobLocation == selection);
+        });
+    } else {
+        userList.filter();
+    }
+});
+
+$('.mobFilter').click(function() {
+   $('.porpSection').addClass('activeMob');
+   $('body').addClass('filterActive')
+    
+});
+
+$('.xbutton').click(function(){
+   $('.porpSection').removeClass('activeMob');
+   $('body').removeClass('filterActive')
+});
+
+$('.selectlist').change(function(){
+      $('.porpSection').removeClass('activeMob');
+   $('body').removeClass('filterActive')           
+});
+        // 
+
+    </script>
 {% endblock %}

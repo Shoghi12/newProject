@@ -17,8 +17,11 @@ final class EmailController extends AbstractController
             ->from('aarrev4@gmail.com')
             ->to('shoghiiandryravelomanantsoa@gmail.com')
             ->subject('Test envoi email via Gmail')
-            ->text('Bonjour, ceci est un test d’envoi d’email via Gmail et Symfony Mailer.')
-            ->html('<p>Bonjour, ceci est un test d’envoi d’email via <strong>Gmail</strong> et Symfony Mailer.</p>');
+             ->html(
+           $this->renderView(
+               'Fo/Common/email.html.twig',
+           )
+       );
 
         $mailer->send($email);
 

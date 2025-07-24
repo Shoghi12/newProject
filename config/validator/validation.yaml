@@ -1,0 +1,33 @@
+App\Entity\InvitationCode:
+  properties:
+    code:
+      - NotBlank: 
+          message: 'Le code ne peut pas être vide'
+      # - Length:
+      #     min: 5
+      #     max: 5
+      #     exactMessage: 'Le code doit contenir exactement 5 caractères'
+      - Regex:
+          pattern: '/^\d{5}$/'
+          message: 'Le code ne doit contenir que des chiffres'
+     
+    description:
+      - NotBlank: 
+          message: 'La description ne peut pas être vide'
+    
+    expire_at:
+      - NotBlank: 
+          message: "La date d'expiration ne peut pas être vide"
+
+App\Entity\Actuality:
+  properties:
+    name:
+      - NotBlank: 
+          message: 'Le titre ne peut pas être vide'
+    description:
+      - NotBlank: 
+          message: 'La description ne peut pas être vide'
+    content:
+      - NotBlank: 
+          message: 'Le contenu ne peut pas être vide'
+

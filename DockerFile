@@ -1,0 +1,93 @@
+# FROM php:8.2.28-apache
+
+# RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends locales apt-utils git libicu-dev g++ libpng-dev libxml2-dev libzip-dev libxslt-dev \
+#     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+#     && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+#     && locale-gen
+
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+#     && docker-php-ext-install pdo pdo_pgsql gd opcache intl zip calendar dom mbstring xsl
+
+# RUN pecl install apcu && docker-php-ext-enable apcu
+
+# WORKDIR /var/www/
+
+
+
+# FROM php:8.2.28-apache
+
+# # Ajout de ServerName pour éviter les avertissements  
+# RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# # Installation des dépendances nécessaires  
+# RUN apt-get update \
+#     && apt-get install -y --no-install-recommends locales apt-utils git libicu-dev g++ \
+#     libpng-dev libxml2-dev libzip-dev libxslt-dev \
+#     && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+#     && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+#     && locale-gen \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
+
+
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+#     && docker-php-ext-install pdo pdo_pgsql gd opcache intl zip calendar dom mbstring xsl \
+#     && docker-php-ext-enable gd  
+
+# RUN pecl install apcu \
+#     && docker-php-ext-enable apcu
+
+# WORKDIR /var/www/
+
+
+FROM php:8.2.28-apache
+
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    locales \
+    apt-utils \
+    git \
+    libicu-dev \
+    g++ \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev \
+    libwebp-dev \
+    libxpm-dev \
+    libxml2-dev \
+    libzip-dev \
+    libxslt-dev \
+    libgd-dev \
+    libpq-dev \
+    libonig-dev \
+    && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+    && echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen \
+    && locale-gen \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp --with-xpm \
+    && docker-php-ext-install pdo pdo_pgsql gd opcache intl zip calendar dom mbstring xsl \
+    && docker-php-ext-enable gd
+
+
+RUN pecl install apcu && docker-php-ext-enable apcu
+
+WORKDIR /var/www/
+
+
+

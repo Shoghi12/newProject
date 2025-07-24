@@ -33,10 +33,10 @@ class ClientRepository extends ServiceEntityRepository
                         ->from('fournisseur')->getSQL() . ' UNION ALL ' . $connection->createQueryBuilder()
                         ->select('nom', 'ville', '\'agent\' AS type')
                         ->from('agent')->getSQL() . ')', 'union_result')
-                        ->where('nom LIKE :nom')
-                        ->setParameter('nom', '%' . $parameters['search'] . '%')
-                        ->executeQuery()
-                        ->fetchAllAssociative();
+                    ->where('nom LIKE :nom')
+                    ->setParameter('nom', '%' . $parameters['search'] . '%')
+                    ->executeQuery()
+                    ->fetchAllAssociative();
 
                 return $query;
            }

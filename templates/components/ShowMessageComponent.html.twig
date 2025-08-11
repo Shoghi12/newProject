@@ -1,0 +1,15 @@
+<div {{ attributes }}>
+    <button
+        data-action="live#action"
+        data-live-action-param="showMessage"
+        {% if show %}disabled{% endif %}
+    >
+        Afficher le message
+    </button>
+
+    {% if show %}
+        <div style="margin-top: 10px; color: green;">
+            🎉 Bravo, tu as cliqué sur le bouton !
+        </div>
+    {% endif %}
+</div>

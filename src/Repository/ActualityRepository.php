@@ -16,28 +16,14 @@ class ActualityRepository extends ServiceEntityRepository
         parent::__construct($registry, Actuality::class);
     }
 
-    //    /**
-    //     * @return Actuality[] Returns an array of Actuality objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('a.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function findById(int $id): ?Actuality
+    {
+        return $this->findOneBy(['id' => $id]);
+    }
 
-    //    public function findOneBySomeField($value): ?Actuality
-    //    {
-    //        return $this->createQueryBuilder('a')
-    //            ->andWhere('a.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findByName(string $name): ?Actuality
+    {
+        return $this->findOneBy(['name' => $name]);
+    }
+
 }

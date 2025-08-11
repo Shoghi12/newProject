@@ -34,6 +34,15 @@ class Actuality
     #[ORM\Column(length: 255, nullable: true)]
     private ?bool $status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'actualities')]
+    private ?User $userId = null;
+
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +128,18 @@ class Actuality
     public function setStatus(?bool $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getUserId(): ?user
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?user $userId): static
+    {
+        $this->userId = $userId;
 
         return $this;
     }

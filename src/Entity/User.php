@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -34,6 +36,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Actuality>
+     */
+    #[ORM\OneToMany(targetEntity: Actuality::class, mappedBy: 'userId')]
+    private Collection $actualities;
+
+    /**
+     * @var Collection<int, Documentation>
+     */
+    #[ORM\OneToMany(targetEntity: Documentation::class, mappedBy: 'UserId')]
+    private Collection $documentations;
+
+    public function __construct()
+    {
+        $this->actualities = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -118,5 +138,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Actuality>
+     */
+    public function getActualities(): Collection
+    {
+        return $this->actualities;
+    }
+
+    public function addActuality(Actuality $actuality): static
+    {
+        if (!$this->actualities->contains($actuality)) {
+            $this->actualities->add($actuality);
+            $actuality->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActuality(Actuality $actuality): static
+    {
+        if ($this->actualities->removeElement($actuality)) {
+            // set the owning side to null (unless already changed)
+            if ($actuality->getUserId() === $this) {
+                $actuality->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Documentation>
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+
+    public function addDocumentation(Documentation $documentation): static
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations->add($documentation);
+            $documentation->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentation(Documentation $documentation): static
+    {
+        if ($this->documentations->removeElement($documentation)) {
+            // set the owning side to null (unless already changed)
+            if ($documentation->getUserId() === $this) {
+                $documentation->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }

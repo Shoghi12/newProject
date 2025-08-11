@@ -44,8 +44,8 @@ final class SecurityControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Se connecter')
             ->form([
-                '_username' => 'admin@admin.com',
-                '_password' => '000000',
+                '_username' => 'user0@domain.fr',
+                '_password' => '0000',
             ]);
         $client->submit($form); 
         $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
@@ -62,6 +62,35 @@ final class SecurityControllerTest extends WebTestCase
     // $client->followRedirect();
  
     }   
+
+    public function testLoginSuccess(){
+        $client = static::createClient();
+
+        $urlGenerator = $client->getContainer()->get('router');
+        $crawler = $client->request('GET', $urlGenerator->generate('app_login'));
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->selectButton('Se connecter')->form(
+            [
+                '_username' => 'user1@test.com',
+                '_password' => 'admin',
+            ]
+        );
+
+        $client->submit($form);
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        $client->followRedirect();
+
+        $this->assertRouteSame('app.fo.app_home');
+       
+    }
+
+    public function testLogout(){
+        $client = static::createClient();
+        $client->request('GET', '/logout');
+        $this->assertResponseStatusCodeSame(Response::HTTP_FOUND);
+        self::assertResponseRedirects('/login');
+    }
 
     
 }

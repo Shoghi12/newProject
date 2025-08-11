@@ -18,7 +18,8 @@ security:
             form_login:
                 # Chemins de connexion  
                 login_path: app_login  
-                check_path: app_login  
+                check_path: app_login 
+                default_target_path: /  
             logout:
                 path: app_logout  
                 target: app_login  # Redirection après déconnexion

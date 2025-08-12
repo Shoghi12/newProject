@@ -33,8 +33,11 @@
                 </div>
                 <button class="btn btn-primary w-100" tabindex="4" type="submit">Se connecter</button>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+               
+                {# <p>
+                    <a href="{{ path('connect_google') }}">Se connecter avec google</a>
+                </p> #}
             </form>
-            
             
         </div>
     </div>

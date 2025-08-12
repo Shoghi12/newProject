@@ -23,6 +23,8 @@ security:
             logout:
                 path: app_logout  
                 target: app_login  # Redirection après déconnexion
+            custom_authenticators:
+                - App\Security\GoogleAuthenticator
 
     access_control:
         - { path: ^/protected, roles: ROLE_USER }

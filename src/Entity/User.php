@@ -18,10 +18,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private int $id;
+    #[ORM\Column(length: 180, nullable: true)]
+    private ?string $googleId = null;
 
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
+    
     #[ORM\Column(length: 180, nullable: true)]
     private ?string $name = null;
 
@@ -34,7 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?string $password = null;
 
     /**
@@ -49,15 +52,34 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Documentation::class, mappedBy: 'UserId')]
     private Collection $documentations;
 
+    /**
+     * @var Collection<int, Report>
+     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'user_id')]
+    private Collection $reports;
+
     public function __construct()
     {
         $this->actualities = new ArrayCollection();
         $this->documentations = new ArrayCollection();
+        $this->reports = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getGoogleId(): ?string
+    {
+        return $this->id;
+    }
+
+      public function setGoogleId(?string $googleId): ?string
+    {
+        $this->googleId = $googleId;
+
+        return $this->googleId;
     }
 
     public function getEmail(): ?string
@@ -124,7 +146,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 
@@ -194,6 +216,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($documentation->getUserId() === $this) {
                 $documentation->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): static
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): static
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getUserId() === $this) {
+                $report->setUserId(null);
             }
         }
 

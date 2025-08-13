@@ -16,9 +16,11 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
-       /**
-        * @return Client[] Returns an array of Client objects
-        */
+      /**
+     * Search by params
+     * @param mixed $parameters
+     * @return mixed
+     */
        public function searchBy($parameters = [])
        {
          if (array_key_exists("union", $parameters)) 

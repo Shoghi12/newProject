@@ -12,7 +12,7 @@ class Documentation
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
@@ -33,7 +33,7 @@ class Documentation
     private ?bool $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'documentations')]
-    private ?user $UserId = null;
+    private ?User $UserId = null;
 
     public function __construct()
     {
@@ -118,12 +118,12 @@ class Documentation
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->UserId;
     }
 
-    public function setUserId(?user $UserId): static
+    public function setUserId(?User $UserId): static
     {
         $this->UserId = $UserId;
 

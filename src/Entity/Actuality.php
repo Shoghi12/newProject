@@ -11,7 +11,7 @@ class Actuality
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private int $id;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
@@ -132,12 +132,12 @@ class Actuality
         return $this;
     }
 
-    public function getUserId(): ?user
+    public function getUserId(): ?User
     {
         return $this->userId;
     }
 
-    public function setUserId(?user $userId): static
+    public function setUserId(?User $userId): static
     {
         $this->userId = $userId;
 

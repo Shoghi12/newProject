@@ -6,7 +6,7 @@ use Stripe\StripeClient;
 
 class StripeService
 {
-    private $stripe;
+    private StripeClient $stripe;
 
     public function __construct(string $stripeSecretKey)
     {

@@ -9,3 +9,4 @@ parameters:
 
     ignoreErrors:
         - '#Property App\\Entity\\User::\$id is never written, only read.#'
+        - '#Property App\\Entity\\User::\$name is never read, only written.#'

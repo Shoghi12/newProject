@@ -21,6 +21,9 @@ class DocumentationRepository extends ServiceEntityRepository
         return $this->findOneBy(['name' => $name]);
     }
 
+    /**
+     * @return array<Documentation>
+    */
     public function findAllByStatusTrue(): array
     {
         $query = $this->createQueryBuilder('d')

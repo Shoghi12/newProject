@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class LanguageController extends AbstractController
 {
-    private $requestStack;
+    private RequestStack $requestStack;
 
     public function __construct(RequestStack $requestStack){
         $this->requestStack = $requestStack;

@@ -72,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getGoogleId(): ?string
     {
-        return $this->id;
+        return $this->googleId;
     }
 
       public function setGoogleId(?string $googleId): ?string

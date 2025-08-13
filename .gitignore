@@ -1,6 +1,6 @@
 ###> symfony/framework-bundle ###
 /.env.local.php
-/secrets.txt
+/secrets_key.txt
 /.env.*.local
 /.env.test
 /.env.*.dev
